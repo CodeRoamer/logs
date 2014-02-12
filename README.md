@@ -1,4 +1,4 @@
-## logs
+## logs [![wercker status](https://app.wercker.com/status/ed8de801ba4452aac5109cdd13ab55aa/s/ "wercker status")](https://app.wercker.com/project/bykey/ed8de801ba4452aac5109cdd13ab55aa)
 
 logs is a Go logs manager. It can use many logs adapters. The repo is inspired by `database/sql` .
 
