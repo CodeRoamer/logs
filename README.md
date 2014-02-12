@@ -2,7 +2,7 @@
 
 logs is a Go logs manager. It can use many logs adapters. The repo is inspired by `database/sql` .
 
-This is a fork of [beego/logs](https://github.com/astaxie/beego/tree/master/logs).
+**This is a fork of [beego/logs](https://github.com/astaxie/beego/tree/master/logs).**
 
 
 ## How to install?
