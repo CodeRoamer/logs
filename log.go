@@ -2,6 +2,7 @@ package logs
 
 import (
 	"fmt"
+	"os"
 	"sync"
 )
 
@@ -73,7 +74,10 @@ func (bl *BeeLogger) SetLogger(adaptername string, config string) error {
 	defer bl.lock.Unlock()
 	if log, ok := adapters[adaptername]; ok {
 		lg := log()
-		lg.Init(config)
+		if err := lg.Init(config);err!=nil{
+			fmt.Printf("logs: fail to init logger: %v\n",err)
+			os.Exit(2)
+		}
 		bl.outputs[adaptername] = lg
 		return nil
 	} else {
