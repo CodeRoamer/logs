@@ -12,7 +12,7 @@ logs is a Go logs manager. It can use many logs adapters. The repo is inspired b
 
 ## What adapters are supported?
 
-As of now this logs support console, file,smtp and conn.
+As of now this logs supports `console`, `file`, `smtp` and `conn`.
 
 
 ## How to use it?
@@ -64,3 +64,7 @@ Configure like this:
 	log.SetLogger("smtp", `{"username":"beegotest@gmail.com","password":"xxxxxxxx","host":"smtp.gmail.com:587","sendTos":["xiemengjun@gmail.com"]}`)
 	log.Critical("sendmail critical")
 	time.Sleep(time.Second * 30)
+
+## License
+
+Gogs is under the MIT License. See the [LICENSE](https://github.com/gogits/logs/blob/master/LICENSE) file for the full license text.
