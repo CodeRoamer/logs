@@ -7,7 +7,7 @@ package logs
 import (
 	"encoding/json"
 
-	"github.com/lunny/xorm"
+	"github.com/go-xorm/xorm"
 )
 
 type Log struct {
