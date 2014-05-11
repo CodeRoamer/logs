@@ -60,6 +60,8 @@ func Register(name string, log loggerType) {
 // BeeLogger is default logger in beego application.
 // it can contain several providers and log message into all providers.
 type BeeLogger struct {
+	Adapter string
+
 	lock                sync.Mutex
 	level               int
 	enableFuncCallDepth bool
@@ -95,6 +97,7 @@ func (bl *BeeLogger) SetLogger(adaptername string, config string) error {
 		lg := log()
 		lg.Init(config)
 		bl.outputs[adaptername] = lg
+		bl.Adapter = adaptername
 		return nil
 	} else {
 		return fmt.Errorf("logs: unknown adaptername %q (forgotten Register?)", adaptername)
@@ -157,9 +160,9 @@ func (bl *BeeLogger) StartLogger() {
 	for {
 		select {
 		case bm := <-bl.msg:
-		for _, l := range bl.outputs {
-			l.WriteMsg(bm.msg, bm.level)
-		}
+			for _, l := range bl.outputs {
+				l.WriteMsg(bm.msg, bm.level)
+			}
 		}
 	}
 
