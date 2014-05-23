@@ -68,6 +68,7 @@ type BeeLogger struct {
 	loggerFuncCallDepth int
 	msg                 chan *logMsg
 	outputs             map[string]LoggerInterface
+	quit                chan bool
 }
 
 type logMsg struct {
@@ -84,6 +85,7 @@ func NewLogger(channellen int64) *BeeLogger {
 	bl.loggerFuncCallDepth = 4
 	bl.msg = make(chan *logMsg, channellen)
 	bl.outputs = make(map[string]LoggerInterface)
+	bl.quit = make(chan bool)
 	go bl.StartLogger()
 	return bl
 }
@@ -163,6 +165,9 @@ func (bl *BeeLogger) StartLogger() {
 			for _, l := range bl.outputs {
 				l.WriteMsg(bm.msg, bm.level)
 			}
+		case <-bl.quit:
+			bl.quit <- true
+			return
 		}
 	}
 
@@ -213,6 +218,8 @@ func (bl *BeeLogger) Flush() {
 
 // close logger, flush all chan data and destroy all adapters in BeeLogger.
 func (bl *BeeLogger) Close() {
+	bl.quit <- true
+	<-bl.quit
 	for {
 		if len(bl.msg) > 0 {
 			bm := <-bl.msg
