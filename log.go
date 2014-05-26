@@ -17,6 +17,7 @@ package logs
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"runtime"
 	"sync"
@@ -30,6 +31,7 @@ const (
 	LevelWarn
 	LevelError
 	LevelCritical
+	LevelFatal
 )
 
 type loggerType func() LoggerInterface
@@ -166,7 +168,6 @@ func (bl *BeeLogger) StartLogger() {
 				l.WriteMsg(bm.msg, bm.level)
 			}
 		case <-bl.quit:
-			bl.quit <- true
 			return
 		}
 	}
@@ -209,6 +210,13 @@ func (bl *BeeLogger) Critical(format string, v ...interface{}) {
 	bl.writerMsg(LevelCritical, msg)
 }
 
+func (bl *BeeLogger) Fatal(format string, v ...interface{}) {
+	msg := fmt.Sprintf("[F] "+format, v...)
+	bl.writerMsg(LevelFatal, msg)
+	bl.Close()
+	os.Exit(1)
+}
+
 // flush all chan data.
 func (bl *BeeLogger) Flush() {
 	for _, l := range bl.outputs {
@@ -219,7 +227,6 @@ func (bl *BeeLogger) Flush() {
 // close logger, flush all chan data and destroy all adapters in BeeLogger.
 func (bl *BeeLogger) Close() {
 	bl.quit <- true
-	<-bl.quit
 	for {
 		if len(bl.msg) > 0 {
 			bm := <-bl.msg
