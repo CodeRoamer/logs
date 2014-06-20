@@ -99,7 +99,9 @@ func (bl *BeeLogger) SetLogger(adaptername string, config string) error {
 	defer bl.lock.Unlock()
 	if log, ok := adapters[adaptername]; ok {
 		lg := log()
-		lg.Init(config)
+		if err := lg.Init(config); err != nil {
+			return err
+		}
 		bl.outputs[adaptername] = lg
 		bl.Adapter = adaptername
 		return nil

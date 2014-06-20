@@ -12,7 +12,7 @@ logs is a Go logs manager. It can use many logs adapters. The repo is inspired b
 
 ## What adapters are supported?
 
-As of now this logs supports `console`, `file`, `smtp` and `conn`.
+As of now this logs supports `console`, `file`, `smtp`, `conn` and `database`.
 
 
 ## How to use it?

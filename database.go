@@ -24,7 +24,7 @@ type DatabaseWriter struct {
 	x      *xorm.Engine
 }
 
-func NewDatabaseWriter() LoggerInterface {
+func NewDatabase() LoggerInterface {
 	return &DatabaseWriter{Level: LevelTrace}
 }
 
@@ -32,15 +32,14 @@ func NewDatabaseWriter() LoggerInterface {
 // config like:
 //	{
 //		"driver": "mysql"
-//		"conn":"root:root@localhost/gogs?charset=utf8",
-//		"level":LevelError
+//		"conn":"root:root@tcp(127.0.0.1:3306)/gogs?charset=utf8",
+//		"level": 0
 //	}
 // connection string is based on xorm.
 func (d *DatabaseWriter) Init(jsonconfig string) (err error) {
 	if err = json.Unmarshal([]byte(jsonconfig), d); err != nil {
 		return err
 	}
-
 	d.x, err = xorm.NewEngine(d.Driver, d.Conn)
 	if err != nil {
 		return err
@@ -69,5 +68,5 @@ func (d *DatabaseWriter) Flush() {
 }
 
 func init() {
-	Register("database", NewConsole)
+	Register("database", NewDatabase)
 }
