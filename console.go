@@ -39,6 +39,7 @@ var colors = []Brush{
 	NewBrush("1;33"), // Warn       yellow
 	NewBrush("1;31"), // Error      red
 	NewBrush("1;35"), // Critical   purple
+	NewBrush("1;31"), // Fatal      red
 }
 
 // ConsoleWriter implements LoggerInterface and writes messages to terminal.
